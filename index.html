@@ -1,0 +1,112 @@
+<idoctype html>
+<head>
+<meta charset = "utf-8">
+<link href='normalize.css' rel="stylesheet">
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+</head>
+<style>
+	body{margin: 0 auto;width:800px;}
+	h1{font-size: 45px; color:black;font-weight:500;}
+	p{word-break:keep-all;text-align:left;font-size:13px;color:black;line-height:2}
+	footer{text-align:center;font-weight: 100;color:black;font-size:12px;}
+
+
+	.balloon{
+			width:50px; height:400px; 
+			background-repeat:no-repeat;
+			animation: bMove 8s linear;
+		}
+
+	@keyframes bMove{
+		0%{ background-position: 0 200px; opacity:0;}
+		20%{opacity:1;}
+		80%{ opacity:1; }
+		100%{ background-position:0 0;opacity:0;}
+		}
+	html {font-family: 'Spoqa Han Sans', 'Sans-serif'; }
+</style>
+
+
+<div id="time" style="font-size: 1em"></div>
+<div id="displayMark" style="font-size: 1em">0</div>
+<body>
+	<img src="cont.png" style="width:800;">
+
+
+
+	<script>
+	var timeD = setInterval(checkTime,100);
+	setTimeout(result,40000);
+	var game = setInterval(attachBalloon,300); //요소 양(갯수)
+
+	var a = 0;
+	var mark = 0;
+	function checkTime(){
+		a = a + 1;
+		console.log(a);
+		time.innerHTML = "  "+ (399 - a) / 10 + "";
+	}
+
+	function result(){
+		alert("Game Over-♥ 당신의 점수는 "+mark+"점입니다.");
+		clearInterval(game);
+		clearInterval(timeD);
+	}
+
+	function attachBalloon(){
+		var t = document.createElement("div");
+		t.setAttribute("class","balloon"); 
+		t.style.position = "absolute"; 
+		
+		var color = randomBH(1,2);
+		t.style.background = "url('h_" + color + ".png') no-repeat";
+		
+		t.style.backgroundSize = "70% auto";
+		t.style.top = randomBH(0,window.innerHeight - 300) + "px";
+		t.style.left = randomBH(0,window.innerWidth) + "px";
+		t.addEventListener("animationend",remove);
+		t.onclick = function(){
+			markUp(this, color);
+		}
+		document.body.appendChild(t);		
+	}
+	
+	function markUp(t, color)
+	{
+		var markText = "";
+		if(color == 1){
+			mark -= 300;
+			markText = "" + mark+"점으로 줄었어ㅠ";
+			displayMark.style.fontSize = "15px";
+			displayMark.style.color = "black";
+		}else{
+			mark += 100;
+			markText = "좋아 " + mark+ "점";
+			displayMark.style.fontSize = "15px;";
+			displayMark.style.color = "hotpink";	
+		}
+		displayMark.innerHTML = markText;
+		remove(t);
+	}
+
+
+	//지워주기 함수(이건 그냥 복붙 )	
+	function remove(){
+		var t = event.target; //이벤트의 타겟을 t로 지정하고.
+		t.parentNode.removeChild(t); //그 엄마를 찾아서 자식중에 t를 지워라. 
+	}
+
+	//최소값과 최대값 사이의 임의의 숫자를 리턴하는 함수(복붙)
+	function randomBH(min, max) {
+  		min = Math.ceil(min);
+  		max = Math.floor(max);
+  		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	</script>
+</body>
+
+<footer>
+	<br><br>
+	HKNU design / Digital publishing / Lee ju hyeon
+	<br><br>
+</footer>
